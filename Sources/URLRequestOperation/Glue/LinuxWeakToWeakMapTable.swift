@@ -1,5 +1,5 @@
 /*
-Copyright 2019 happn
+Copyright 2019-2021 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,18 +15,19 @@ limitations under the License. */
 
 import Foundation
 #if canImport(FoundationNetworking)
-	import FoundationNetworking
+import FoundationNetworking
 #endif
 
 
 
 #if os(Linux)
 
-/** Unsafe class (not fully tested, not fully documented, slow). It’s a patch to
-have the project compile on Linux… Do not use outside of the URLRequestOperation
-project!
-Also the class will leak containers when the key is deallocated as we do not
-monitor deallocations. */
+/**
+ Unsafe class (not fully tested, not fully documented, slow).
+ 
+ It’s a patch to have the project compile on Linux…
+ Do not use outside of the URLRequestOperation project!
+ Also the class will leak containers when the key is deallocated as we do not monitor deallocations. */
 class LinuxWeakToWeakForGenericURLSessionDelegateMapTable {
 	
 	func object(forKey key: URLSessionTask) -> URLSessionTaskDelegate? {
@@ -75,7 +76,7 @@ private class WeakElementBox<ElementType : AnyObject> {
 
 extension WeakElementBox: Equatable where ElementType: Equatable {
 	
-	static func == (lhs: WeakElementBox<ElementType>, rhs: WeakElementBox<ElementType>) -> Bool {
+	static func ==(lhs: WeakElementBox<ElementType>, rhs: WeakElementBox<ElementType>) -> Bool {
 		return lhs.element == rhs.element
 	}
 	

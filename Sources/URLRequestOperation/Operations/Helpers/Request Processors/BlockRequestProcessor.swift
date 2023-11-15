@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2021 happn
+Copyright 2022 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import XCTest
-@testable import URLRequestOperation
-
-
-
-class IPUtilsTests : XCTestCase {
-	
-	func testSockaddrToString() {
-		let ipstr = "9.9.9.9"
-		var sa = sockaddr_in()
-		sa.sin_family = sa_family_t(AF_INET)
-#if !os(Linux)
-		sa.sin_len = __uint8_t(MemoryLayout<sockaddr_in>.size)
+import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
 #endif
-		XCTAssertEqual(inet_pton(AF_INET, ipstr, &sa.sin_addr), 1)
-		
-		XCTAssertEqual(try SockAddrWrapper(sockaddr_in: &sa).sockaddrStringRepresentation(), ipstr)
+
+
+
+public struct BlockRequestProcessor : RequestProcessor {
+	
+	public let block: @Sendable (URLRequest, (Result<URLRequest, Error>) -> Void) -> Void
+	
+	public init(_ block: @escaping @Sendable (URLRequest, (Result<URLRequest, Error>) -> Void) -> Void) {
+		self.block = block
+	}
+	
+	public func transform(urlRequest: URLRequest, handler: @escaping @Sendable (Result<URLRequest, Error>) -> Void) {
+		block(urlRequest, handler)
 	}
 	
 }

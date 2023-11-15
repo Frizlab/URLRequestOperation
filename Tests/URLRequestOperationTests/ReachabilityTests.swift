@@ -1,5 +1,5 @@
 /*
-Copyright 2019 happn
+Copyright 2019-2021 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,14 +18,14 @@ import XCTest
 
 
 
-class ReachabilityTests: XCTestCase {
+class ReachabilityTests : XCTestCase {
 	
-	#if canImport(SystemConfiguration)
+#if canImport(SystemConfiguration)
 	
 	func testQuad9Reachability() {
 		do {
 			let reachability = try ReachabilityObserver.reachabilityObserver(forIPv4AddressStr: "9.9.9.9")
-			XCTAssertTrue(reachability.currentlyReachable)
+			XCTAssertTrue(reachability.currentlyReachable ?? false)
 		} catch {
 			XCTFail("Error thrown during test: \(error)")
 		}
@@ -34,16 +34,15 @@ class ReachabilityTests: XCTestCase {
 	func testInvalidHostReachability() {
 		do {
 			let _/*reachability*/ = try ReachabilityObserver.reachabilityObserver(forHost: "invalid.frostland.fr")
-			/* Funnily enough, it seems testing the reachability does not mean much
-			 * in a test unit. It seems the system does not have the time to
-			 * realize the server is unreachable and simply defaults to it being
-			 * reachable... */
+			/* Funnily enough, it seems testing the reachability does not mean much in a test unit.
+			 * It seems the system does not have the time to realize the server is unreachable
+			 * and simply defaults to it being reachable… */
 //			XCTAssertFalse(reachability.currentlyReachable)
 		} catch {
 			XCTFail("Error thrown during test: \(error)")
 		}
 	}
 	
-	#endif
+#endif
 	
 }

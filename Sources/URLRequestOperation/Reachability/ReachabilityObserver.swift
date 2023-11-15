@@ -1,5 +1,5 @@
 /*
-Copyright 2019 happn
+Copyright 2019-2021 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ limitations under the License. */
 
 import Foundation
 #if canImport(os)
-	import os.log
+import os.log
 #endif
 import SystemConfiguration
-#if os(iOS)
-	import UIKit
+#if os(tvOS) || os(iOS)
+import UIKit
 #endif
 
 import Logging
@@ -29,17 +29,19 @@ import SemiSingleton
 
 
 
-/* When (if) we have optional methods in a protocol in pure Swift, we can drop
- * the NSObject’s inheritance from this class! See the ReachabilitySubscriber
- * protocol for more information. */
-public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleInit {
+/* If we can drop @objc in ReachabilitySubscriber, we could drop NSObject’s inheritance.
+ * See the ReachabilitySubscriber protocol for more information.
+ *
+ * Dev note: We have an unchecked conformance to Sendable because of wasReachable which is mutable.
+ * We only use/modify this variable in a Lock-protected code, and it’s private, so we should be good. */
+public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleInit, @unchecked Sendable {
 	
 	public static func convertReachabilityFlagsToStr(_ flags: SCNetworkReachabilityFlags) -> String {
-		#if os(iOS)
-			let isWWANStr = (flags.contains(.isWWAN) ? "W" : "-")
-		#else
-			let isWWANStr = "X"
-		#endif
+#if os(iOS)
+		let isWWANStr = (flags.contains(.isWWAN) ? "W" : "-")
+#else
+		let isWWANStr = "X"
+#endif
 		
 		return (
 			isWWANStr +
@@ -62,14 +64,14 @@ public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleIni
 	public typealias SemiSingletonKey = InitInfo
 	public typealias SemiSingletonAdditionalInitInfo = Void
 	
-	public enum InitInfo : Hashable {
+	public enum InitInfo : Sendable, Hashable {
 		
 		case sockaddr(SockAddrWrapper)
 		case host(String)
 		
 	}
 	
-	public enum Error : Int, Swift.Error {
+	public enum Err : Int, Error, Sendable {
 		
 		case noError = 0
 		
@@ -104,80 +106,80 @@ public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleIni
 		subscribersLock.name = "Lock for Reachability Observer of \(info)"
 		
 		switch info {
-		case .host(let host):
-			guard let ref = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, host) else {
-				throw Error.cannotCreateReachability
-			}
-			reachabilityRef = ref
-			
-		case .sockaddr(let addr):
-			reachabilityRef = try addr.withUnsafeSockaddrPointer{ ptr in
-				guard let ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, ptr) else {
-					throw Error.cannotCreateReachability
+			case .host(let host):
+				guard let ref = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, host) else {
+					throw Err.cannotCreateReachability
 				}
-				return ref
-			}
+				reachabilityRef = ref
+				
+			case .sockaddr(let addr):
+				reachabilityRef = try addr.withUnsafeSockaddrPointer{ ptr in
+					guard let ref = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, ptr) else {
+						throw Err.cannotCreateReachability
+					}
+					return ref
+				}
 		}
 		
 		super.init()
 		
+		/* From tests I’ve done, it seems assessing unreachability because network is down seems to be synchronous,
+		 *  so setting was reachable as soon as the reachability observer is instantiated makes sense. */
+		wasReachable = currentlyReachable
+		
 		let container = WeakReachabilityObserverContainer(observer: self)
 		var context = SCNetworkReachabilityContext(version: 0, info: unsafeBitCast(container, to: UnsafeMutableRawPointer.self), retain: reachabilityRetainForReachabilityObserver, release: reachabilityReleaseForReachabilityObserver, copyDescription: nil)
 		guard SCNetworkReachabilitySetCallback(reachabilityRef, reachabilityCallbackForReachabilityObserver, &context) else {
-			throw Error.cannotSetReachabilityCallback
+			throw Err.cannotSetReachabilityCallback
 		}
 		
 		isReachabilityScheduled = SCNetworkReachabilitySetDispatchQueue(reachabilityRef, reachabilityQueue)
-		#if os(iOS)
-			appDidEnterBackgroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: nil){ [weak self] notif in
-				guard let strongSelf = self, strongSelf.isReachabilityScheduled else {
-					return
-				}
-				strongSelf.isReachabilityScheduled = !SCNetworkReachabilitySetDispatchQueue(strongSelf.reachabilityRef, nil)
+#if os(tvOS) || os(iOS)
+		appDidEnterBackgroundObserver = NotificationCenter.default.addObserver(forName: NotifNameGetter.didEnterBackgroundNotifName, object: nil, queue: nil){ [weak self] notif in
+			guard let strongSelf = self, strongSelf.isReachabilityScheduled else {
+				return
 			}
-			appWillEnterForegroundObserver = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: nil){ [weak self] notif in
-				guard let strongSelf = self, !strongSelf.isReachabilityScheduled else {
-					return
-				}
-				if let f = strongSelf.currentReachabilityFlags() {strongSelf.reachabilityChanged(newFlags: f)}
-				strongSelf.isReachabilityScheduled = SCNetworkReachabilitySetDispatchQueue(strongSelf.reachabilityRef, strongSelf.reachabilityQueue)
+			strongSelf.isReachabilityScheduled = !SCNetworkReachabilitySetDispatchQueue(strongSelf.reachabilityRef, nil)
+		}
+		appWillEnterForegroundObserver = NotificationCenter.default.addObserver(forName: NotifNameGetter.willEnterForegroundNotifName, object: nil, queue: nil){ [weak self] notif in
+			guard let strongSelf = self, !strongSelf.isReachabilityScheduled else {
+				return
 			}
-		#endif
+			if let f = strongSelf.currentReachabilityFlags() {strongSelf.reachabilityChanged(newFlags: f)}
+			strongSelf.isReachabilityScheduled = SCNetworkReachabilitySetDispatchQueue(strongSelf.reachabilityRef, strongSelf.reachabilityQueue)
+		}
+#endif
 	}
 	
 	deinit {
-		#if canImport(os)
+#if canImport(os)
 		if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-			URLRequestOperationConfig.oslog.flatMap{ os_log("Deiniting a reachability observer with reachability ref %@", log: $0, type: .debug, String(describing: reachabilityRef)) }}
-		#endif
-		URLRequestOperationConfig.logger?.debug("Deiniting a reachability observer with reachability ref \(String(describing: reachabilityRef))")
-		#if os(iOS)
-			if let observer = appDidEnterBackgroundObserver  {NotificationCenter.default.removeObserver(observer, name: UIApplication.didEnterBackgroundNotification,  object: nil)}
-			if let observer = appWillEnterForegroundObserver {NotificationCenter.default.removeObserver(observer, name: UIApplication.willEnterForegroundNotification, object: nil)}
-		#endif
+			Conf.oslog.flatMap{ os_log("Deiniting a reachability observer with reachability ref %@", log: $0, type: .debug, String(describing: reachabilityRef)) }}
+#endif
+		Conf.logger?.debug("Deiniting a reachability observer with reachability ref \(String(describing: reachabilityRef))")
+#if os(tvOS) || os(iOS)
+		if let observer = appDidEnterBackgroundObserver  {NotificationCenter.default.removeObserver(observer, name: NotifNameGetter.didEnterBackgroundNotifName,  object: nil)}
+		if let observer = appWillEnterForegroundObserver {NotificationCenter.default.removeObserver(observer, name: NotifNameGetter.willEnterForegroundNotifName, object: nil)}
+#endif
 		if isReachabilityScheduled && !SCNetworkReachabilitySetDispatchQueue(reachabilityRef, nil) {
-			#if canImport(os)
+#if canImport(os)
 			if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-				URLRequestOperationConfig.oslog.flatMap{ os_log("Cannot remove dispatch queue from a reachability. We might crash later if reachability changes.", log: $0, type: .error) }}
-			#endif
-			URLRequestOperationConfig.logger?.error("Cannot remove dispatch queue from a reachability. We might crash later if reachability changes.")
+				Conf.oslog.flatMap{ os_log("Cannot remove dispatch queue from a reachability. We might crash later if reachability changes.", log: $0, type: .error) }}
+#endif
+			Conf.logger?.error("Cannot remove dispatch queue from a reachability. We might crash later if reachability changes.")
 		}
 		if !SCNetworkReachabilitySetCallback(reachabilityRef, nil, nil) {
-			#if canImport(os)
+#if canImport(os)
 			if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-				URLRequestOperationConfig.oslog.flatMap{ os_log("Cannot unset callback from a reachability. We might crash later if reachability changes.", log: $0, type: .error) }}
-			#endif
-			URLRequestOperationConfig.logger?.error("Cannot unset callback from a reachability. We might crash later if reachability changes.")
+				Conf.oslog.flatMap{ os_log("Cannot unset callback from a reachability. We might crash later if reachability changes.", log: $0, type: .error) }}
+#endif
+			Conf.logger?.error("Cannot unset callback from a reachability. We might crash later if reachability changes.")
 		}
 		/* No need to release the reachability ref: it is implicitly bridged. */
 	}
 	
-	public var currentlyReachable: Bool {
-		guard let currentReachabilityFlags = currentReachabilityFlags() else {
-			/* If we cannot get the reachability flags, we assume we’re reachable. */
-			return true
-		}
-		return ReachabilityObserver.isReachableWithFlags(currentReachabilityFlags)
+	public var currentlyReachable: Bool? {
+		return currentReachabilityFlags().flatMap{ ReachabilityObserver.isReachableWithFlags($0) }
 	}
 	
 	public func currentReachabilityFlags() -> SCNetworkReachabilityFlags? {
@@ -199,29 +201,29 @@ public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleIni
 	}
 	
 	/* ***************
-	   MARK: - Private
-	   *************** */
+	   MARK: - Private
+	   *************** */
 	
-	fileprivate class WeakReachabilityObserverContainer {
+	fileprivate final class WeakReachabilityObserverContainer {
 		weak var reachabilityObserver: ReachabilityObserver?
 		init(observer: ReachabilityObserver) {
 			reachabilityObserver = observer
-			#if canImport(os)
+#if canImport(os)
 			if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-				URLRequestOperationConfig.oslog.flatMap{ os_log("Inited Weak Reachability Observer Container %{public}@", log: $0, type: .debug, String(describing: Unmanaged.passUnretained(self).toOpaque())) }}
-			#endif
-			URLRequestOperationConfig.logger?.debug("Inited Weak Reachability Observer Container \(String(describing: Unmanaged.passUnretained(self).toOpaque()))")
+				Conf.oslog.flatMap{ os_log("Inited Weak Reachability Observer Container %{public}@", log: $0, type: .debug, String(describing: Unmanaged.passUnretained(self).toOpaque())) }}
+#endif
+			Conf.logger?.debug("Inited Weak Reachability Observer Container \(String(describing: Unmanaged.passUnretained(self).toOpaque()))")
 		}
 		deinit {
-			#if canImport(os)
+#if canImport(os)
 			if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-				URLRequestOperationConfig.oslog.flatMap{ os_log("Deiniting Weak Reachability Observer Container %{public}@", log: $0, type: .debug, String(describing: Unmanaged.passUnretained(self).toOpaque())) }}
-			#endif
-			URLRequestOperationConfig.logger?.debug("Deiniting Weak Reachability Observer Container \(String(describing: Unmanaged.passUnretained(self).toOpaque()))")
+				Conf.oslog.flatMap{ os_log("Deiniting Weak Reachability Observer Container %{public}@", log: $0, type: .debug, String(describing: Unmanaged.passUnretained(self).toOpaque())) }}
+#endif
+			Conf.logger?.debug("Deiniting Weak Reachability Observer Container \(String(describing: Unmanaged.passUnretained(self).toOpaque()))")
 		}
 	}
 	
-	private var wasReachable: Bool? = nil
+	private var wasReachable: Bool?
 	
 	private let subscribersLock = NSLock()
 	private let subscribers = NSHashTable<ReachabilitySubscriber>.weakObjects()
@@ -234,24 +236,23 @@ public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleIni
 	private var appWillEnterForegroundObserver: NSObjectProtocol?
 	
 	fileprivate func reachabilityChanged(newFlags: SCNetworkReachabilityFlags) {
-		#if canImport(os)
+#if canImport(os)
 		if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-			URLRequestOperationConfig.oslog.flatMap{ os_log("Reachability changed object callback with new flags %{public}@, in %@", log: $0, type: .debug, ReachabilityObserver.convertReachabilityFlagsToStr(newFlags), String(describing: self)) }}
-		#endif
-		URLRequestOperationConfig.logger?.debug("Reachability changed object callback with new flags \(ReachabilityObserver.convertReachabilityFlagsToStr(newFlags)), in \(String(describing: self))")
+			Conf.oslog.flatMap{ os_log("Reachability changed object callback with new flags %{public}@, in %@", log: $0, type: .debug, ReachabilityObserver.convertReachabilityFlagsToStr(newFlags), String(describing: self)) }}
+#endif
+		Conf.logger?.debug("Reachability changed object callback with new flags \(ReachabilityObserver.convertReachabilityFlagsToStr(newFlags)), in \(String(describing: self))")
 		
 		subscribersLock.lock()
-		/* Reachability changed can be called from any thread. We must be locked
-		 * when reading/writing wasReachable. */
+		/* Reachability changed can be called from any thread.
+		 * We must be locked when reading/writing wasReachable. */
 		let isReachable = ReachabilityObserver.isReachableWithFlags(newFlags)
 		let isReachableChanged = (isReachable != wasReachable)
 		wasReachable = isReachable
 		
-		/* We do not iterate directly on the subscribers hash table. Indeed
-		 * copying the subscribers to a static array is an operation of known
-		 * complexity. If we iterated directly in the lock, we would allow code
-		 * with unknown complexity to run while we're locked and potentially even
-		 * trigger a dead-lock. */
+		/* We do not iterate directly on the subscribers hash table.
+		 * Indeed copying the subscribers to a static array is an operation of known complexity.
+		 * If we iterated directly in the lock, we would allow code with unknown complexity to run while we're locked,
+		 *  and potentially even trigger a dead-lock. */
 		let subscribersArray = subscribers.allObjects
 		subscribersLock.unlock()
 		for subscriber in subscribersArray {
@@ -267,11 +268,11 @@ public final class ReachabilityObserver : NSObject, SemiSingletonWithFallibleIni
 
 
 private func reachabilityCallbackForReachabilityObserver(reachability: SCNetworkReachability, flags: SCNetworkReachabilityFlags, context: UnsafeMutableRawPointer?) -> Void {
-	#if canImport(os)
+#if canImport(os)
 	if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-		URLRequestOperationConfig.oslog.flatMap{ os_log("Reachability changed function callback with new flags %{public}@", log: $0, type: .debug, ReachabilityObserver.convertReachabilityFlagsToStr(flags)) }}
-	#endif
-	URLRequestOperationConfig.logger?.debug("Reachability changed function callback with new flags \(ReachabilityObserver.convertReachabilityFlagsToStr(flags))")
+		Conf.oslog.flatMap{ os_log("Reachability changed function callback with new flags %{public}@", log: $0, type: .debug, ReachabilityObserver.convertReachabilityFlagsToStr(flags)) }}
+#endif
+	Conf.logger?.debug("Reachability changed function callback with new flags \(ReachabilityObserver.convertReachabilityFlagsToStr(flags))")
 	unsafeBitCast(context, to: ReachabilityObserver.WeakReachabilityObserverContainer.self).reachabilityObserver?.reachabilityChanged(newFlags: flags)
 }
 

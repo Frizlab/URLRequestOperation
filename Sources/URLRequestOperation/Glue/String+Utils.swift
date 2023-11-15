@@ -1,5 +1,5 @@
 /*
-Copyright 2019 happn
+Copyright 2022 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,14 +15,21 @@ limitations under the License. */
 
 import Foundation
 
-import URLRequestOperation
 
 
-
-let q = OperationQueue()
-let request = URLRequest(url: URL(string: "https://frostland.fr")!, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 0.1)
-let operation = URLRequestOperation(request: request)
-operation.completionBlock = { print("ok"); exit(0) }
-q.addOperation(operation)
-
-dispatchMain()
+extension String {
+	
+	func quoted(emptyStaysEmpty: Bool = false) -> String {
+		guard !emptyStaysEmpty || !isEmpty else {
+			return ""
+		}
+		
+		var (sepOpen, sepClose) = (#"""#, #"""#)
+		while contains(sepOpen) || contains(sepClose) {
+			sepOpen = "#" + sepOpen
+			sepClose = sepClose + "#"
+		}
+		return sepOpen + self + sepClose
+	}
+	
+}

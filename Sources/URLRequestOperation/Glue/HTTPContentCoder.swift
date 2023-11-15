@@ -1,5 +1,5 @@
 /*
-Copyright 2019-2021 happn
+Copyright 2021 happn
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,23 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License. */
 
-import XCTest
-@testable import URLRequestOperation
+import Foundation
+
+import MediaType
 
 
 
-class IPUtilsTests : XCTestCase {
+public protocol HTTPContentEncoder : Sendable {
 	
-	func testSockaddrToString() {
-		let ipstr = "9.9.9.9"
-		var sa = sockaddr_in()
-		sa.sin_family = sa_family_t(AF_INET)
-#if !os(Linux)
-		sa.sin_len = __uint8_t(MemoryLayout<sockaddr_in>.size)
-#endif
-		XCTAssertEqual(inet_pton(AF_INET, ipstr, &sa.sin_addr), 1)
-		
-		XCTAssertEqual(try SockAddrWrapper(sockaddr_in: &sa).sockaddrStringRepresentation(), ipstr)
-	}
+	func encodeForHTTPContent<T>(_ value: T) throws -> (Data, MediaType) where T : Encodable
+	
+}
+
+
+public protocol HTTPContentDecoder : Sendable {
+	
+	func canDecodeHTTPContent(mediaType: MediaType) -> Bool
+	func decodeHTTPContent<T>(_ type: T.Type, from data: Data, mediaType: MediaType) throws -> T where T : Decodable
 	
 }
