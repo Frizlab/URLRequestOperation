@@ -19,6 +19,7 @@ import Foundation
 #endif
 
 import Logging
+import SafeGlobal
 
 import FormURLEncodedCoder
 

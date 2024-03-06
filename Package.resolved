@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "SafeGlobal",
+        "repositoryURL": "https://github.com/Frizlab/SafeGlobal.git",
+        "state": {
+          "branch": null,
+          "revision": "c5eab7c8cde795385e572de655b28701d7f8f381",
+          "version": "0.2.0"
+        }
+      },
+      {
         "package": "SemiSingleton",
         "repositoryURL": "https://github.com/happn-app/SemiSingleton.git",
         "state": {
@@ -62,6 +71,15 @@
           "branch": null,
           "revision": "32e8d724467f8fe623624570367e3d50c5638e46",
           "version": "1.5.2"
+        }
+      },
+      {
+        "package": "swift-syntax",
+        "repositoryURL": "https://github.com/apple/swift-syntax.git",
+        "state": {
+          "branch": null,
+          "revision": "08a2f0a9a30e0f705f79c9cfaca1f68b71bdc775",
+          "version": "510.0.0"
         }
       }
     ]
