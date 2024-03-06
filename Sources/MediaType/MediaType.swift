@@ -154,7 +154,7 @@ public struct MediaType : Sendable, Hashable, RawRepresentable {
 			 * We have to do ObjC-index to Swift index conversion though… */
 			
 			let addedStr = String(scanner.string[scanner.mt_currentIndex])
-			scanner.scanLocation += 1
+			scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
 			
 			guard addedStr.rangeOfCharacter(from: .quotedPairSecondChar) != nil else {return nil}
 			parsedString += addedStr
