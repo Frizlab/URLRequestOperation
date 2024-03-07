@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/SafeGlobal.git",
       "state" : {
-        "revision" : "c5eab7c8cde795385e572de655b28701d7f8f381",
-        "version" : "0.2.0"
+        "revision" : "aed1d6c7db070320e0d8e332c29bddfabb26e414",
+        "version" : "0.3.0"
       }
     },
     {

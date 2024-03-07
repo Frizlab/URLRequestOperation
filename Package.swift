@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.10
 import PackageDescription
 
 
@@ -17,7 +17,7 @@ let package = Package(
 		.package(url: "https://github.com/apple/swift-log.git",           from: "1.4.2"),
 		.package(url: "https://github.com/Frizlab/HTTPCoders.git",        from: "0.1.0"),
 		.package(url: "https://github.com/Frizlab/RetryingOperation.git", from: "1.1.6"),
-		.package(url: "https://github.com/Frizlab/SafeGlobal.git",        from: "0.2.0"),
+		.package(url: "https://github.com/Frizlab/SafeGlobal.git",        from: "0.3.0"),
 		.package(url: "https://github.com/Frizlab/SemiSingleton.git",     from: "2.1.0-beta.1"),
 	],
 	targets: [

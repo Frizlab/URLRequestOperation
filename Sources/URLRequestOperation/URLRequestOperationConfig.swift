@@ -15,7 +15,7 @@ limitations under the License. */
 
 import Foundation
 #if canImport(OSLog)
-@preconcurrency import OSLog
+import OSLog
 #endif
 
 import Logging
@@ -44,10 +44,14 @@ import FormURLEncodedCoder
 public enum URLRequestOperationConfig {
 	
 #if canImport(os)
-	@SafeGlobal public static var oslog: OSLog? = .default
+ #if swift(>=6.0)
+  /* See <https://developer.apple.com/forums/thread/747816?answerId=781922022#781922022>. */
+  #warning("Reevaluate whether nonisolated(unsafe) is still necessary.")
+ #endif
+	@SafeGlobal nonisolated(unsafe) public static var oslog: OSLog? = .default
 	/* This retricts availability of Apple’s logging, so we keep the OSLog variant for now, even if it is less convenient. */
 //	@available(macOS 11.0, tvOS 14.0, iOS 14.0, watchOS 7.0, *)
-//	public static var oslog: os.Logger? = .init(.default)
+//	@SafeGlobal nonisolated(unsafe) public static var oslog: os.Logger? = .init(.default)
 #endif
 	@SafeGlobal public static var logger: Logging.Logger? = {
 #if canImport(os)
