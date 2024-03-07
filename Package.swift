@@ -2,8 +2,9 @@
 import PackageDescription
 
 
-let swiftSettings: [SwiftSetting] = []
-//let swiftSettings: [SwiftSetting] = [.enableExperimentalFeature("StrictConcurrency")]
+let swiftSettings: [SwiftSetting] = [
+	.enableExperimentalFeature("StrictConcurrency")
+]
 
 let package = Package(
 	name: "URLRequestOperation",
