@@ -67,17 +67,17 @@ public final class SockAddrWrapper : Sendable, Hashable, CustomStringConvertible
 		self.init(rawsockaddr: &sa6)
 	}
 	
-	/** The given sockaddr is copied */
+	/** The given sockaddr is copied. */
 	public convenience init(sockaddr_in sa4Ptr: UnsafePointer<sockaddr_in>) {
 		self.init(rawsockaddr: UnsafeRawPointer(sa4Ptr))
 	}
 	
-	/** The given sockaddr is copied */
+	/** The given sockaddr is copied. */
 	public convenience init(sockaddr_in6 sa6Ptr: UnsafePointer<sockaddr_in6>) {
 		self.init(rawsockaddr: UnsafeRawPointer(sa6Ptr))
 	}
 	
-	/** The given sockaddr is copied */
+	/** The given sockaddr is copied. */
 	public convenience init(sockaddr: UnsafePointer<sockaddr>) {
 		self.init(rawsockaddr: UnsafeRawPointer(sockaddr))
 	}
@@ -89,10 +89,10 @@ public final class SockAddrWrapper : Sendable, Hashable, CustomStringConvertible
 #endif
 		family = sockaddrPtr.pointee.sa_family
 #if !os(Linux)
-		rawPointer = UnsafeMutableRawPointer.allocate(byteCount: len, alignment: MemoryLayout<sockaddr>.alignment /* Not sure about that though... */)
+		rawPointer = UnsafeMutableRawPointer.allocate(byteCount: len, alignment: MemoryLayout<sockaddr>.alignment /* Not sure about that though… */)
 		rawPointer.copyMemory(from: rawsockaddr, byteCount: len)
 #else
-		rawPointer = UnsafeMutableRawPointer.allocate(byteCount: MemoryLayout<sockaddr>.size, alignment: MemoryLayout<sockaddr>.alignment /* Not sure about that though... */)
+		rawPointer = UnsafeMutableRawPointer.allocate(byteCount: MemoryLayout<sockaddr>.size, alignment: MemoryLayout<sockaddr>.alignment /* Not sure about that though… */)
 		rawPointer.copyMemory(from: rawsockaddr, byteCount: MemoryLayout<sockaddr>.size)
 #endif
 	}
