@@ -45,8 +45,7 @@ public final class ReachabilityRetryHelper : NSObject, RetryHelper, Reachability
 	
 	public func reachabilityDidBecomeReachable(observer: ReachabilityObserver) {
 #if canImport(os)
-		if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-			Conf.oslog.flatMap{ os_log("URLOpID %{public}@: The reachability observer tells me the host is reachable again. Let’s force retrying the operation sooner.", log: $0, type: .debug, String(describing: self.operation.urlOperationIdentifier)) }}
+		Conf.oslog.flatMap{ os_log("URLOpID %{public}@: The reachability observer tells me the host is reachable again. Let’s force retrying the operation sooner.", log: $0, type: .debug, String(describing: self.operation.urlOperationIdentifier)) }
 #endif
 		Conf.logger?.debug("The reachability observer tells me the host is reachable again. Let’s force retrying the operation sooner.", metadata: [LMK.operationID: "\(self.operation.urlOperationIdentifier)"])
 		operation.retry(in: NetworkErrorRetryProvider.exponentialBackoffTimeForIndex(1))

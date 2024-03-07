@@ -344,8 +344,7 @@ public final class URLRequestDownloadOperation<ResultType : Sendable> : Retrying
 						/* Session’s delegate is an URLRequestOperation. */
 						if !LoggedWarnings.weirdSessionSetupWithURLRequestOperationDelegate {
 #if canImport(os)
-							if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-								Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", log: $0, type: .info, String(describing: urlOperationIdentifier)) }}
+							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", log: $0, type: .info, String(describing: urlOperationIdentifier)) }
 #endif
 							Conf.logger?.warning("Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 							LoggedWarnings.weirdSessionSetupWithURLRequestOperationDelegate = true
@@ -354,8 +353,7 @@ public final class URLRequestDownloadOperation<ResultType : Sendable> : Retrying
 						/* Session’s delegate is non-nil, but it’s not an URLRequestOperationSessionDelegate. */
 						if !LoggedWarnings.downloadOperationWithSessionDelegateNotURLRequestOperationSessionDelegate {
 #if canImport(os)
-							if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-								Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDownloadOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }}
+							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDownloadOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }
 #endif
 							Conf.logger?.warning("Creating task for an URLRequestDownloadOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls. This will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 							LoggedWarnings.downloadOperationWithSessionDelegateNotURLRequestOperationSessionDelegate = true
@@ -365,8 +363,7 @@ public final class URLRequestDownloadOperation<ResultType : Sendable> : Retrying
 					/* Session’s delegate is nil. */
 					if !LoggedWarnings.downloadOperationWithSessionDelegateNil {
 #if canImport(os)
-						if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDownloadOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }}
+						Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDownloadOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }
 #endif
 						Conf.logger?.warning("Creating task for an URLRequestDownloadOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 						LoggedWarnings.downloadOperationWithSessionDelegateNil = true

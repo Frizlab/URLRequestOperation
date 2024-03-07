@@ -361,8 +361,7 @@ public final class URLRequestDataOperation<ResultType : Sendable> : RetryingOper
 						/* Session’s delegate is an URLRequestOperation. */
 						if !LoggedWarnings.weirdSessionSetupWithURLRequestOperationDelegate {
 #if canImport(os)
-							if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-								Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", log: $0, type: .info, String(describing: urlOperationIdentifier)) }}
+							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", log: $0, type: .info, String(describing: urlOperationIdentifier)) }
 #endif
 							Conf.logger?.warning("Very weird setup of an URLSession where its delegate is an URLRequestOperation. I hope you know what you’re doing, this will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 							LoggedWarnings.weirdSessionSetupWithURLRequestOperationDelegate = true
@@ -371,8 +370,7 @@ public final class URLRequestDataOperation<ResultType : Sendable> : RetryingOper
 						/* Session’s delegate is non-nil, but it’s not an URLRequestOperationSessionDelegate. */
 						if !LoggedWarnings.dataOperationWithSessionDelegateNotURLRequestOperationSessionDelegate {
 #if canImport(os)
-							if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-								Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDataOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls (task did receive response, did receive data and did complete at least). This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }}
+							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDataOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls (task did receive response, did receive data and did complete at least). This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }
 #endif
 							Conf.logger?.warning("Creating task for an URLRequestDataOperation, but session’s delegate is non-nil, and not an URLRequestOperationSessionDelegate: creating a handler-based task, which mean you won’t receive some delegate calls (task did receive response, did receive data and did complete at least). This will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 							LoggedWarnings.dataOperationWithSessionDelegateNotURLRequestOperationSessionDelegate = true
@@ -382,8 +380,7 @@ public final class URLRequestDataOperation<ResultType : Sendable> : RetryingOper
 					/* Session’s delegate is nil. */
 					if !LoggedWarnings.dataOperationWithSessionDelegateNil {
 #if canImport(os)
-						if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-							Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDataOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }}
+						Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Creating task for an URLRequestDataOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", log: $0, String(describing: urlOperationIdentifier)) }
 #endif
 						Conf.logger?.warning("Creating task for an URLRequestDataOperation, but session’s delegate is nil: creating a handler-based task, which mean task metrics won’t be collected. This will be logged only once.", metadata: [LMK.operationID: "\(urlOperationIdentifier)"])
 						LoggedWarnings.dataOperationWithSessionDelegateNil = true
@@ -505,21 +502,20 @@ public final class URLRequestDataOperation<ResultType : Sendable> : RetryingOper
 			}
 			let responseCodeStr = ((response as? HTTPURLResponse)?.statusCode).flatMap(String.init) ?? "<nil>"
 #if canImport(os)
-			if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-				Conf.oslog.flatMap{ os_log(
-					"""
-					URLOpID %{public}@: Received response.
-						HTTP Status Code: %{public}@
-						Data size: %{private}ld
-						%{public}@%@
-					""",
-					log: $0,
-					type: .debug,
-					String(describing: urlOperationIdentifier),
-					responseCodeStr,
-					data.count,
-					dataStrPrefix, (dataStr ?? "").quoted(emptyStaysEmpty: true)
-				) }}
+			Conf.oslog.flatMap{ os_log(
+				"""
+				URLOpID %{public}@: Received response.
+					HTTP Status Code: %{public}@
+					Data size: %{private}ld
+					%{public}@%@
+				""",
+				log: $0,
+				type: .debug,
+				String(describing: urlOperationIdentifier),
+				responseCodeStr,
+				data.count,
+				dataStrPrefix, (dataStr ?? "").quoted(emptyStaysEmpty: true)
+			) }
 #endif
 			Conf.logger?.trace("Received response.", metadata: [
 				LMK.operationID: "\(urlOperationIdentifier)",

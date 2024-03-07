@@ -37,7 +37,6 @@ class SessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate
 		print("delegate \(delegateId): data received")
 	}
 	
-	@available(macOS 10.12, *)
 	func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
 		print("delegate \(delegateId): metrics received")
 	}

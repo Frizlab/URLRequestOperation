@@ -44,7 +44,6 @@ import FormURLEncodedCoder
 public enum URLRequestOperationConfig {
 	
 #if canImport(os)
-	@available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *)
 	@SafeGlobal public static var oslog: OSLog? = .default
 	/* This retricts availability of Apple’s logging, so we keep the OSLog variant for now, even if it is less convenient. */
 //	@available(macOS 11.0, tvOS 14.0, iOS 14.0, watchOS 7.0, *)
@@ -52,11 +51,10 @@ public enum URLRequestOperationConfig {
 #endif
 	@SafeGlobal public static var logger: Logging.Logger? = {
 #if canImport(os)
-		if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-			return nil
-		}
-#endif
+		return nil
+#else
 		return Logger(label: "com.happn.URLRequestOperation")
+#endif
 	}()
 	
 	/* Maybe TODO: Avoid locking each and every time we access the conf variable.

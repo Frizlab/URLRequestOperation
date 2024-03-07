@@ -42,23 +42,22 @@ extension URLRequest {
 			}
 		} ?? ("No body", "to-str", "")
 #if canImport(os)
-		if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-			Conf.oslog.flatMap{ os_log(
-				"""
-				URLOpID %{public}@: Starting request.
-				   URL: %@
-				   Method: %{public}@
-				   Body size: %{private}ld
-				   %{public}@%@
-				""",
-				log: $0,
-				type: .debug,
-				String(describing: operationID),
-				url?.absoluteString ?? "<nil>",
-				httpMethod ?? "<nil>",
-				httpBody?.count ?? 0,
-				bodyStrPrefix, (bodyStr ?? "").quoted(emptyStaysEmpty: true)
-			) }}
+		Conf.oslog.flatMap{ os_log(
+			"""
+			URLOpID %{public}@: Starting request.
+				URL: %@
+				Method: %{public}@
+				Body size: %{private}ld
+				%{public}@%@
+			""",
+			log: $0,
+			type: .debug,
+			String(describing: operationID),
+			url?.absoluteString ?? "<nil>",
+			httpMethod ?? "<nil>",
+			httpBody?.count ?? 0,
+			bodyStrPrefix, (bodyStr ?? "").quoted(emptyStaysEmpty: true)
+		) }
 #endif
 		Conf.logger?.trace("Starting a new request.", metadata: [
 			LMK.operationID: "\(operationID)",

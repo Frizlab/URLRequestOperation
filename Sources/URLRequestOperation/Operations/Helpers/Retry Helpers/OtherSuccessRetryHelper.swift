@@ -52,8 +52,7 @@ public final class OtherSuccessRetryHelper : RetryHelper, @unchecked Sendable {
 				guard succeededHost == self.host else {return}
 				
 #if canImport(os)
-				if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-					Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Got an URL operation succeeded with same host as me. Forcing retrying sooner.", log: $0, type: .debug, String(describing: self.operation.urlOperationIdentifier)) }}
+				Conf.oslog.flatMap{ os_log("URLOpID %{public}@: Got an URL operation succeeded with same host as me. Forcing retrying sooner.", log: $0, type: .debug, String(describing: self.operation.urlOperationIdentifier)) }
 #endif
 				Conf.logger?.debug("Got an URL operation succeeded with same host as me. Forcing retrying sooner.", metadata: [LMK.operationID: "\(self.operation.urlOperationIdentifier)"])
 				self.operation.retry(in: NetworkErrorRetryProvider.exponentialBackoffTimeForIndex(1))

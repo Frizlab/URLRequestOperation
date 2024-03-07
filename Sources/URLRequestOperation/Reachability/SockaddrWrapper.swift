@@ -177,8 +177,7 @@ public final class SockAddrWrapper : Hashable, CustomStringConvertible, @uncheck
 				
 			default:
 #if canImport(os)
-				if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-					Conf.oslog.flatMap{ os_log("Got unknown family when comparing two SockAddrWrapper", log: $0, type: .error) }}
+				Conf.oslog.flatMap{ os_log("Got unknown family when comparing two SockAddrWrapper", log: $0, type: .error) }
 #endif
 				Conf.logger?.error("Got unknown family when comparing two SockAddrWrapper")
 				return false
@@ -193,8 +192,7 @@ public final class SockAddrWrapper : Hashable, CustomStringConvertible, @uncheck
 			default: /* No other case than 1, 0 or -1 should happen. We consider any other value to be -1. */
 				if v != -1 {
 #if canImport(os)
-					if #available(macOS 10.12, tvOS 10.0, iOS 10.0, watchOS 3.0, *) {
-						Conf.oslog.flatMap{ os_log("Got unknown return value from inet_pton: %d. Treating as -1.", log: $0, type: .info, v) }}
+					Conf.oslog.flatMap{ os_log("Got unknown return value from inet_pton: %d. Treating as -1.", log: $0, type: .info, v) }
 #endif
 					Conf.logger?.info("Got unknown return value from inet_pton: \(v). Treating as -1.")
 				}
