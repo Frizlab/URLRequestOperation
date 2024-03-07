@@ -1,88 +1,86 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "HTTPCoders",
-        "repositoryURL": "https://github.com/happn-app/HTTPCoders.git",
-        "state": {
-          "branch": null,
-          "revision": "b8e713844c9a0c23a8e6c8d4a288cff444f6fdb8",
-          "version": "0.1.2"
-        }
-      },
-      {
-        "package": "RecursiveSyncDispatch",
-        "repositoryURL": "https://github.com/happn-app/RecursiveSyncDispatch.git",
-        "state": {
-          "branch": null,
-          "revision": "04936f64e00d898006fc97b5ec938d8ce1fa14ea",
-          "version": "1.0.1"
-        }
-      },
-      {
-        "package": "RetryingOperation",
-        "repositoryURL": "https://github.com/happn-app/RetryingOperation.git",
-        "state": {
-          "branch": null,
-          "revision": "c64f98966916fc184f7575dd97e2eba9962a3d33",
-          "version": "1.1.8"
-        }
-      },
-      {
-        "package": "SafeGlobal",
-        "repositoryURL": "https://github.com/Frizlab/SafeGlobal.git",
-        "state": {
-          "branch": null,
-          "revision": "c5eab7c8cde795385e572de655b28701d7f8f381",
-          "version": "0.2.0"
-        }
-      },
-      {
-        "package": "SemiSingleton",
-        "repositoryURL": "https://github.com/happn-app/SemiSingleton.git",
-        "state": {
-          "branch": null,
-          "revision": "a2bbad008641318f3f7faf2ec53e3bb8f0e080ff",
-          "version": "2.1.0-beta.1"
-        }
-      },
-      {
-        "package": "stream-reader",
-        "repositoryURL": "https://github.com/Frizlab/stream-reader.git",
-        "state": {
-          "branch": null,
-          "revision": "bae1bfb2fc2cdc6f89c3f6e89ef92d22039ef7b5",
-          "version": "3.5.0"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections.git",
-        "state": {
-          "branch": null,
-          "revision": "937e904258d22af6e447a0b72c0bc67583ef64a2",
-          "version": "1.0.4"
-        }
-      },
-      {
-        "package": "swift-log",
-        "repositoryURL": "https://github.com/apple/swift-log.git",
-        "state": {
-          "branch": null,
-          "revision": "32e8d724467f8fe623624570367e3d50c5638e46",
-          "version": "1.5.2"
-        }
-      },
-      {
-        "package": "swift-syntax",
-        "repositoryURL": "https://github.com/apple/swift-syntax.git",
-        "state": {
-          "branch": null,
-          "revision": "08a2f0a9a30e0f705f79c9cfaca1f68b71bdc775",
-          "version": "510.0.0"
-        }
+  "pins" : [
+    {
+      "identity" : "httpcoders",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/HTTPCoders.git",
+      "state" : {
+        "revision" : "b8e713844c9a0c23a8e6c8d4a288cff444f6fdb8",
+        "version" : "0.1.2"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "recursivesyncdispatch",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/happn-app/RecursiveSyncDispatch.git",
+      "state" : {
+        "revision" : "04936f64e00d898006fc97b5ec938d8ce1fa14ea",
+        "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "retryingoperation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/RetryingOperation.git",
+      "state" : {
+        "revision" : "c64f98966916fc184f7575dd97e2eba9962a3d33",
+        "version" : "1.1.8"
+      }
+    },
+    {
+      "identity" : "safeglobal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/SafeGlobal.git",
+      "state" : {
+        "revision" : "c5eab7c8cde795385e572de655b28701d7f8f381",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "semisingleton",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/SemiSingleton.git",
+      "state" : {
+        "revision" : "a2bbad008641318f3f7faf2ec53e3bb8f0e080ff",
+        "version" : "2.1.0-beta.1"
+      }
+    },
+    {
+      "identity" : "stream-reader",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/stream-reader.git",
+      "state" : {
+        "revision" : "13c99289668e1dedfcf28c05867cb8fe0860b133",
+        "version" : "3.5.2"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections.git",
+      "state" : {
+        "revision" : "94cf62b3ba8d4bed62680a282d4c25f9c63c2efb",
+        "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log.git",
+      "state" : {
+        "revision" : "32e8d724467f8fe623624570367e3d50c5638e46",
+        "version" : "1.5.2"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax.git",
+      "state" : {
+        "revision" : "08a2f0a9a30e0f705f79c9cfaca1f68b71bdc775",
+        "version" : "510.0.0"
+      }
+    }
+  ],
+  "version" : 2
 }
