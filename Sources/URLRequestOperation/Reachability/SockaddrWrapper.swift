@@ -35,13 +35,16 @@ public enum SockAddrConversionError : Int, Error, Sendable {
 }
 
 
-public final class SockAddrWrapper : Sendable, Hashable, CustomStringConvertible {
+/* Sendability is unchecked because this class contains a raw pointer which is not Sendable.
+ * We are not modifying the contents of the memory of the pointer ever and do not make it accessible outside of the class,
+ *  so AFAICT it’s ok, we’re actually Sendable. */
+public final class SockAddrWrapper : Hashable, CustomStringConvertible, @unchecked Sendable {
 	
 #if !os(Linux)
-	let len: Int /* Original type is __uint8_t */
+	private let len: Int /* Original type is __uint8_t */
 #endif
-	let family: sa_family_t
-	let rawPointer: UnsafeMutableRawPointer
+	private let family: sa_family_t
+	private let rawPointer: UnsafeMutableRawPointer
 	
 	public convenience init(ipV4AddressStr: String) throws {
 		var sa4 = sockaddr_in()
