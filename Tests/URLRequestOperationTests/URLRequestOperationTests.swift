@@ -82,8 +82,13 @@ class URLRequestOperationTests : XCTestCase {
 		struct Params : Encodable {
 			var page: Int
 		}
+#if canImport(Darwin)
+		let url =     URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")
+#else
+		let url = try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")
+#endif
 		let op = try URLRequestDataOperation.forAPIRequest(
-			url: URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos"),
+			url: url,
 			urlParameters: Params(page: 1),
 			successType: [Todo].self, errorType: Empty.self
 		)
@@ -110,8 +115,13 @@ class URLRequestOperationTests : XCTestCase {
 			var completed: Bool
 		}
 		struct Empty : Decodable {}
+#if canImport(Darwin)
+		let url =     URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")
+#else
+		let url = try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")
+#endif
 		let op = try URLRequestDataOperation.forAPIRequest(
-			url: URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos"), method: "POST",
+			url: url, method: "POST",
 			httpBody: TodoCreation(userId: 42, title: "I did it!", completed: true),
 			successType: Todo.self, errorType: Empty.self
 		)
