@@ -20,7 +20,7 @@ import UIKit
 
 
 @objc
-internal final class NotifNameGetter : NSObject {
+internal final class NotifNameGetter : NSObject, @unchecked Sendable {
 	
 	private static let notifNameGetter = NotifNameGetter()
 	
