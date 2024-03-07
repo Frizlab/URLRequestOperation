@@ -72,35 +72,35 @@ public struct MediaType : Sendable, Hashable, RawRepresentable {
 		let scanner = Scanner(string: rawValue)
 		scanner.charactersToBeSkipped = CharacterSet() /* We skip nothing */
 		
-		guard let typeParsed = scanner.mt_scanCharacters(from: .tchar) else {return nil}
+		guard let typeParsed = scanner.scanCharacters(from: .tchar) else {return nil}
 		assert(!typeParsed.isEmpty)
 		self.type = typeParsed
 		
-		guard scanner.mt_scanString("/") != nil else {return nil}
+		guard scanner.scanString("/") != nil else {return nil}
 		
-		guard let subtypeParsed = scanner.mt_scanCharacters(from: .tchar) else {return nil}
+		guard let subtypeParsed = scanner.scanCharacters(from: .tchar) else {return nil}
 		assert(!subtypeParsed.isEmpty)
 		self.subtype = subtypeParsed
 		
 		var parameters = [Parameter]()
 		while !scanner.isAtEnd {
-			_ = scanner.mt_scanCharacters(from: .ws)
-			guard scanner.mt_scanString(";") != nil else {return nil}
-			_ = scanner.mt_scanCharacters(from: .ws)
+			_ = scanner.scanCharacters(from: .ws)
+			guard scanner.scanString(";") != nil else {return nil}
+			_ = scanner.scanCharacters(from: .ws)
 			
-			guard let keyParsed = scanner.mt_scanCharacters(from: .tchar) else {return nil}
+			guard let keyParsed = scanner.scanCharacters(from: .tchar) else {return nil}
 			assert(!keyParsed.isEmpty)
 			let key = keyParsed
 			
-			guard scanner.mt_scanString("=") != nil else {return nil}
+			guard scanner.scanString("=") != nil else {return nil}
 			
 			let value: String
-			if scanner.mt_scanString("\"") != nil {
+			if scanner.scanString("\"") != nil {
 				/* We must parse a quoted string */
 				guard let v = Self.parseQuotedString(from: scanner) else {return nil}
 				value = v
 			} else {
-				guard let valueParsed = scanner.mt_scanCharacters(from: .tchar) else {return nil}
+				guard let valueParsed = scanner.scanCharacters(from: .tchar) else {return nil}
 				assert(!valueParsed.isEmpty)
 				value = valueParsed
 			}
@@ -140,20 +140,20 @@ public struct MediaType : Sendable, Hashable, RawRepresentable {
 		
 		/* Let’s try and parse whatever legal characters we can from the quoted string.
 		 * The backslash and double-quote chars are not in the set we parse here, so the scanner will stop at these (among other). */
-		if let scanned = scanner.mt_scanCharacters(from: .qdtext) {
+		if let scanned = scanner.scanCharacters(from: .qdtext) {
 			parsedString += scanned
 		}
 		
 		/* Now let’s see if we stopped at a backlash.
 		 * If so, we’ll retrieve the next char, verify it is in the legal charset for a backslashed char,
 		 * add it to the parsed string, and continue parsing the quoted string from there. */
-		guard scanner.mt_scanString("\\") == nil else {
+		guard scanner.scanString("\\") == nil else {
 			guard !scanner.isAtEnd else {return nil}
 			
 			/* Whatever char we have at the current location will be added to the parsed string (if in quotedPairSecondCharCharacterSet).
 			 * We have to do ObjC-index to Swift index conversion though… */
 			
-			let addedStr = String(scanner.string[scanner.mt_currentIndex])
+			let addedStr = String(scanner.string[scanner.currentIndex])
 			scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
 			
 			guard addedStr.rangeOfCharacter(from: .quotedPairSecondChar) != nil else {return nil}
@@ -165,7 +165,7 @@ public struct MediaType : Sendable, Hashable, RawRepresentable {
 		/* We have now consumed all legal chars from a quoted string and are not stopped on a backslash.
 		 * The only legal char left is a double quote!
 		 * Which also signals the end of the quoted string. */
-		guard scanner.mt_scanString("\"") != nil else {return nil}
+		guard scanner.scanString("\"") != nil else {return nil}
 		return parsedString
 	}
 	
