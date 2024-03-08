@@ -21,7 +21,15 @@ import UIKit
 public typealias Image = UIImage
 #elseif canImport(AppKit)
 import AppKit
-public typealias Image = NSImage
+/* NSImage is not Sendable.
+ * See <https://forums.swift.org/t/69318>. */
+public struct Image : @unchecked Sendable {
+	public let nsImage: NSImage
+	init?(data: Data) {
+		guard let nsImage = NSImage(data: data) else {return nil}
+		self.nsImage = nsImage
+	}
+}
 #endif
 
 
