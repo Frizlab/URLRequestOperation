@@ -83,7 +83,9 @@ class URLRequestOperationTests : XCTestCase {
 			var page: Int
 		}
 #if canImport(Darwin)
-		let url =     URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")
+		let url =
+		if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {    URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")}
+		else                                                   {try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")}
 #else
 		let url = try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")
 #endif
@@ -116,7 +118,9 @@ class URLRequestOperationTests : XCTestCase {
 		}
 		struct Empty : Decodable {}
 #if canImport(Darwin)
-		let url =     URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")
+		let url =
+		if #available(macOS 13, iOS 16, tvOS 16, watchOS 9, *) {    URL(string: "https://jsonplaceholder.typicode.com")!.appending(components: "todos")}
+		else                                                   {try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")}
 #else
 		let url = try URL(string: "https://jsonplaceholder.typicode.com")!.appendingPathComponentsSafely("todos")
 #endif
