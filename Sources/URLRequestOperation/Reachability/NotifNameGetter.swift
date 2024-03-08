@@ -31,14 +31,9 @@ internal final class NotifNameGetter : NSObject, @unchecked Sendable {
 			return n
 		}
 		
-		/* The call below should be called on the main thread.
-		 * We __will__ get a diagnostic at runtime telling us this should’ve been called on the main thread.
-		 * However, I _cannot_ call it on the main thread because I have to be sync.
-		 * Also, we’re litterally retrieving the value of a constant, so there’s NO problem doing this from whatever thread.
-		 * IMHO it’s `UIApplication.*Notification` that should not have been marked as @MainActor………
-		 *
-		 * The lock we’ve locked at the beginning of the function will be unlocked in the call below. */
-		notifNameGetter.perform(#selector(NotifNameGetter.getDidEnterBackgroundNotifName))
+		/* The lock we’ve locked at the beginning of the function will be unlocked in the call below. */
+		if Thread.isMainThread {                             notifNameGetter.perform(#selector(NotifNameGetter.getDidEnterBackgroundNotifName))}
+		else                   {DispatchQueue.main.sync{ _ = notifNameGetter.perform(#selector(NotifNameGetter.getDidEnterBackgroundNotifName)) }}
 		
 		/* The lock is unlocked here.
 		 * However we can still access the following variable: as soon as it is set, it becomes r/o. */
@@ -52,7 +47,8 @@ internal final class NotifNameGetter : NSObject, @unchecked Sendable {
 			return n
 		}
 		
-		notifNameGetter.perform(#selector(NotifNameGetter.getWillEnterForegroundNotifName))
+		if Thread.isMainThread {                             notifNameGetter.perform(#selector(NotifNameGetter.getWillEnterForegroundNotifName))}
+		else                   {DispatchQueue.main.sync{ _ = notifNameGetter.perform(#selector(NotifNameGetter.getWillEnterForegroundNotifName)) }}
 		return notifNameGetter.cachedWillEnterForegroundNotifName!
 	}
 	
@@ -72,5 +68,6 @@ internal final class NotifNameGetter : NSObject, @unchecked Sendable {
 		cachedWillEnterForegroundNotifName = UIApplication.willEnterForegroundNotification
 		lock.unlock()
 	}
+	
 }
 #endif
