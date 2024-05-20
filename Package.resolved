@@ -6,14 +6,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/HTTPCoders.git",
       "state" : {
-        "revision" : "b8e713844c9a0c23a8e6c8d4a288cff444f6fdb8",
-        "version" : "0.1.2"
+        "revision" : "49f599a83f9b4b986d0e49ccf73d51b0d3ae618f",
+        "version" : "0.1.3"
       }
     },
     {
       "identity" : "recursivesyncdispatch",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/happn-app/RecursiveSyncDispatch.git",
+      "location" : "https://github.com/Frizlab/RecursiveSyncDispatch.git",
       "state" : {
         "revision" : "04936f64e00d898006fc97b5ec938d8ce1fa14ea",
         "version" : "1.0.1"
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/RetryingOperation.git",
       "state" : {
-        "revision" : "c64f98966916fc184f7575dd97e2eba9962a3d33",
-        "version" : "1.1.8"
+        "revision" : "e635bf001fef0247f25dad1ed85ba369b0b46e4b",
+        "version" : "1.1.9"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/SemiSingleton.git",
       "state" : {
-        "revision" : "a2bbad008641318f3f7faf2ec53e3bb8f0e080ff",
-        "version" : "2.1.0-beta.1"
+        "revision" : "e010f893ea20cc32fcf58396383859b327185005",
+        "version" : "2.1.0-beta.2"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
-        "revision" : "08a2f0a9a30e0f705f79c9cfaca1f68b71bdc775",
-        "version" : "510.0.0"
+        "revision" : "303e5c5c36d6a558407d364878df131c3546fad8",
+        "version" : "510.0.2"
       }
     }
   ],

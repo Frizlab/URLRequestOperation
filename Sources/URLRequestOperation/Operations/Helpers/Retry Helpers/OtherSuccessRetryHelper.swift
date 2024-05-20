@@ -24,9 +24,9 @@ import RetryingOperation
 
 extension NSNotification.Name {
 	
-	public static let URLRequestOperationDidSucceedURLSessionTask = NSNotification.Name(rawValue: "com.happn.URLRequestOperation.DidSucceedURLSessionTask")
-	public static let URLRequestOperationWillSucceedOperation = NSNotification.Name(rawValue: "com.happn.URLRequestOperation.WillSucceedOperation")
-	public static let URLRequestOperationWillFinishOperation = NSNotification.Name(rawValue: "com.happn.URLRequestOperation.WillFinishOperation")
+	public static let URLRequestOperationDidSucceedURLSessionTask = NSNotification.Name(rawValue: "me.frizlab.URLRequestOperation.DidSucceedURLSessionTask")
+	public static let URLRequestOperationWillSucceedOperation = NSNotification.Name(rawValue: "me.frizlab.URLRequestOperation.WillSucceedOperation")
+	public static let URLRequestOperationWillFinishOperation = NSNotification.Name(rawValue: "me.frizlab.URLRequestOperation.WillFinishOperation")
 	
 }
 

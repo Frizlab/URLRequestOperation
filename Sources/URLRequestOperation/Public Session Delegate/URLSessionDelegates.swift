@@ -49,7 +49,7 @@ final class URLSessionDelegates : @unchecked Sendable {
 	}
 #endif
 	
-	private let queueSyncForMapTable = DispatchQueue(label: "com.happn.URLRequestOperation.URLSessionDelegates")
+	private let queueSyncForMapTable = DispatchQueue(label: "me.frizlab.URLRequestOperation.URLSessionDelegates")
 #if !os(Linux)
 	private var taskToDelegate = NSMapTable<URLSessionTask, URLSessionTaskDelegate>.weakToWeakObjects()
 #else

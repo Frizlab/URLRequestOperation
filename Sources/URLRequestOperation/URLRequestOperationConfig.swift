@@ -57,7 +57,7 @@ public enum URLRequestOperationConfig {
 #if canImport(os)
 		return nil
 #else
-		return Logger(label: "com.happn.URLRequestOperation")
+		return Logger(label: "me.frizlab.URLRequestOperation")
 #endif
 	}()
 	

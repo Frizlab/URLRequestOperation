@@ -22,7 +22,7 @@ import SafeGlobal
 
 #if DEBUG
 internal enum LatestURLOpIDContainer {
-	static let opIdQueue = DispatchQueue(label: "com.happn.URLRequestOperation.OperationID")
+	static let opIdQueue = DispatchQueue(label: "me.frizlab.URLRequestOperation.OperationID")
 	@SafeGlobal static var latestURLOperationIdentifier = -1
 }
 

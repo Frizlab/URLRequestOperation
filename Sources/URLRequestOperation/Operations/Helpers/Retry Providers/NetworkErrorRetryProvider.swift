@@ -9,7 +9,7 @@ import RetryingOperation
 
 extension NSNotification.Name {
 	
-	public static let URLRequestOperationNetworkErrorRetryProviderShouldResetRetryCount = NSNotification.Name(rawValue: "com.happn.URLRequestOperation.NetworkErrorRetryProviderShouldResetRetryCount")
+	public static let URLRequestOperationNetworkErrorRetryProviderShouldResetRetryCount = NSNotification.Name(rawValue: "me.frizlab.URLRequestOperation.NetworkErrorRetryProviderShouldResetRetryCount")
 	
 }
 
