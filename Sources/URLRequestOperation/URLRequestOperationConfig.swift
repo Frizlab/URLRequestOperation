@@ -26,13 +26,14 @@ import FormURLEncodedCoder
 
 
 public extension ConfKeys {
-	/* Would be enum and have static vars if <https://forums.swift.org/t/pitch-metatype-keypaths/70767>.
-	 * But for now we get “Key path cannot refer to static member” if we do this… */
+	/* URLRequestOperation conf namespace declaration. */
 	struct URLRequestOperation {}
-	/* Would be `URLRequestOperation.Type {URLRequestOperation.self}` if we could use an enum. */
 	var urlRequestOperation: URLRequestOperation {URLRequestOperation()}
 }
+
+
 extension ConfKeys.URLRequestOperation {
+	
 #if canImport(os)
  #if swift(>=6.0)
   /* See <https://developer.apple.com/forums/thread/747816?answerId=781922022#781922022>. */
@@ -103,10 +104,12 @@ extension ConfKeys.URLRequestOperation {
 	#declareConfKey("maxResponseBodySizeToLog", Int?.self, defaultValue: nil)
 	/** Log everything URL Session related in the file at the given URL. */
 //	#declareConfKey("debugLogURL", URL?.self, defaultValue: nil)
+	
 }
 
 
 internal extension Conf {
+	
 	static var oslog:  OSLog?          {Conf[\.urlRequestOperation.oslog]}
 	static var logger: Logging.Logger? {Conf[\.urlRequestOperation.logger]}
 	
@@ -136,4 +139,5 @@ internal extension Conf {
 	static var maxRequestBodySizeToLog: Int? {Conf[\.urlRequestOperation.maxRequestBodySizeToLog]}
 	
 	static var maxResponseBodySizeToLog: Int? {Conf[\.urlRequestOperation.maxResponseBodySizeToLog]}
+	
 }
