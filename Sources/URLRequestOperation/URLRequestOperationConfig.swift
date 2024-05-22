@@ -19,7 +19,7 @@ import Foundation
 @preconcurrency import OSLog
 #endif
 
-import Configuration
+import GlobalConfModule
 import Logging
 
 import FormURLEncodedCoder

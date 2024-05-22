@@ -21,7 +21,7 @@ import FoundationNetworking
 import os.log
 #endif
 
-import Configuration
+import GlobalConfModule
 import RetryingOperation
 
 

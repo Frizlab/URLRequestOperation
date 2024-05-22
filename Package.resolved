@@ -1,13 +1,13 @@
 {
-  "originHash" : "580d3f309aed70e97c00a28a16faf25517bbd1b977885e094839774325a952ec",
+  "originHash" : "c3cd5cd5c905209d9db46ce5e05c619e7edec35b571efa4b74f8c5c7f92b630c",
   "pins" : [
     {
-      "identity" : "dependencyinjection",
+      "identity" : "globalconfmodule",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Frizlab/DependencyInjection.git",
+      "location" : "https://github.com/Frizlab/GlobalConfModule.git",
       "state" : {
-        "branch" : "conf",
-        "revision" : "cbb8150470da0ca3ae68f171467a8c75225d5060"
+        "revision" : "c5f42ad45a96a9849b964d76f4327989ae379500",
+        "version" : "0.1.0"
       }
     },
     {

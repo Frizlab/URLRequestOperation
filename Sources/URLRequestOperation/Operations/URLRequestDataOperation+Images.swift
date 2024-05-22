@@ -32,7 +32,7 @@ public struct Image : @unchecked Sendable {
 }
 #endif
 
-import Configuration
+import GlobalConfModule
 
 
 

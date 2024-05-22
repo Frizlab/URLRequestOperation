@@ -18,7 +18,7 @@ import Foundation
 import os.log
 #endif
 
-import Configuration
+import GlobalConfModule
 import Logging
 
 

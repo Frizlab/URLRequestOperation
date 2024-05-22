@@ -3,7 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-import Configuration
+import GlobalConfModule
 import RetryingOperation
 
 

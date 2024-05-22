@@ -18,8 +18,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
-import Configuration
 import FormURLEncodedCoder
+import GlobalConfModule
 
 
 

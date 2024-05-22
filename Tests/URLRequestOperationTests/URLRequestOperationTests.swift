@@ -18,7 +18,7 @@ import FoundationNetworking
 #endif
 import XCTest
 
-import Configuration
+import GlobalConfModule
 import RetryingOperation
 
 @testable import URLRequestOperation
