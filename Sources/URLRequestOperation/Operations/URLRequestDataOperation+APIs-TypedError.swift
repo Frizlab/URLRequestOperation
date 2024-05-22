@@ -18,6 +18,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
 import FormURLEncodedCoder
 
 
@@ -49,7 +50,7 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<APIErrorType : Decodable>(
 		urlRequest: URLRequest, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self, errorType: APIErrorType.Type = APIErrorType.self,
-		decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
@@ -87,7 +88,7 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<APIErrorType : Decodable>(
 		url: URL, method: String = "GET", headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self, errorType: APIErrorType.Type = APIErrorType.self,
-		decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
@@ -111,7 +112,7 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<APIErrorType : Decodable, URLParametersType : Encodable>(
 		url: URL, method: String = "GET", urlParameters: URLParametersType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self, errorType: APIErrorType.Type = APIErrorType.self,
-		parameterEncoder: URLQueryEncoder = URLRequestOperationConfig.defaultAPIRequestParametersEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		parameterEncoder: URLQueryEncoder = Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
@@ -130,7 +131,7 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<APIErrorType : Decodable, HTTPBodyType : Encodable>(
 		url: URL, method: String = "POST", httpBody: HTTPBodyType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self, errorType: APIErrorType.Type = APIErrorType.self,
-		bodyEncoder: HTTPContentEncoder = URLRequestOperationConfig.defaultAPIRequestBodyEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		bodyEncoder: HTTPContentEncoder = Conf[\.urlRequestOperation.defaultAPIRequestBodyEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
@@ -151,7 +152,7 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<APIErrorType : Decodable, URLParametersType : Encodable, HTTPBodyType : Encodable>(
 		url: URL, method: String = "POST", urlParameters: URLParametersType?, httpBody: HTTPBodyType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self, errorType: APIErrorType.Type = APIErrorType.self,
-		parameterEncoder: URLQueryEncoder = URLRequestOperationConfig.defaultAPIRequestParametersEncoder, bodyEncoder: HTTPContentEncoder = URLRequestOperationConfig.defaultAPIRequestBodyEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		parameterEncoder: URLQueryEncoder = Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder], bodyEncoder: HTTPContentEncoder = Conf[\.urlRequestOperation.defaultAPIRequestBodyEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },

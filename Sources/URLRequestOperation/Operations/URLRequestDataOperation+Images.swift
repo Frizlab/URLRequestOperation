@@ -32,6 +32,8 @@ public struct Image : @unchecked Sendable {
 }
 #endif
 
+import Configuration
+
 
 
 #if canImport(AppKit) || canImport(UIKit)
@@ -42,8 +44,8 @@ public extension URLRequestDataOperation {
 		urlRequest: URLRequest, session: URLSession = .shared,
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultImageRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultImageRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultImageRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultImageRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == Image {
 		return URLRequestDataOperation<Image>(
 			request: urlRequest, session: session, requestProcessors: requestProcessors,
@@ -57,8 +59,8 @@ public extension URLRequestDataOperation {
 		url: URL, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultImageRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultImageRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultImageRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultImageRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == Image {
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)
 		for (key, val) in headers {request.setValue(val, forHTTPHeaderField: key)}

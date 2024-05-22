@@ -18,16 +18,18 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
+
 
 
 public extension URLRequestDataOperation {
 	
 	static func forString(
 		urlRequest: URLRequest, session: URLSession = .shared,
-		encoding: String.Encoding = URLRequestOperationConfig.defaultStringEncoding,
+		encoding: String.Encoding = Conf[\.urlRequestOperation.defaultStringEncoding],
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultStringRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultStringRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultStringRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultStringRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == String {
 		return URLRequestDataOperation<String>(
 			request: urlRequest, session: session,
@@ -40,10 +42,10 @@ public extension URLRequestDataOperation {
 	
 	static func forString(
 		url: URL, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
-		encoding: String.Encoding = URLRequestOperationConfig.defaultStringEncoding,
+		encoding: String.Encoding = Conf[\.urlRequestOperation.defaultStringEncoding],
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultStringRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultStringRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultStringRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultStringRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == String {
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)
 		for (key, val) in headers {request.setValue(val, forHTTPHeaderField: key)}

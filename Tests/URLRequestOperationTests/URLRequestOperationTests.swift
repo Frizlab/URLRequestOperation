@@ -18,6 +18,7 @@ import FoundationNetworking
 #endif
 import XCTest
 
+import Configuration
 import RetryingOperation
 
 @testable import URLRequestOperation
@@ -28,8 +29,8 @@ import RetryingOperation
 class URLRequestOperationTests : XCTestCase {
 	
 	override class func setUp() {
-		URLRequestOperationConfig.maxRequestBodySizeToLog = .max
-		URLRequestOperationConfig.maxResponseBodySizeToLog = .max
+		Conf.setRootValue(.max, for: \.urlRequestOperation.maxRequestBodySizeToLog)
+		Conf.setRootValue(.max, for: \.urlRequestOperation.maxResponseBodySizeToLog)
 	}
 	
 	func testRetryCount() {

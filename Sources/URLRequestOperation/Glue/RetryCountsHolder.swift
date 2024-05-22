@@ -15,6 +15,8 @@ limitations under the License. */
 
 import Foundation
 
+import Configuration
+
 
 
 /* Just like SafeGlobal, we use the same lock for all RetryCountsHolder instances.

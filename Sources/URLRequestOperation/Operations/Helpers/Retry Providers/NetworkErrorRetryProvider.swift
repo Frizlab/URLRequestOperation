@@ -3,6 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
 import RetryingOperation
 
 
@@ -45,7 +46,7 @@ public final class NetworkErrorRetryProvider : RetryProvider, @unchecked Sendabl
 	public private(set) var numberOfRetriesPerOperation = RetryCountsHolder(resetTryCountNotifName: .URLRequestOperationNetworkErrorRetryProviderShouldResetRetryCount)
 	
 	public init(
-		maximumNumberOfRetries: Int? = URLRequestOperationConfig.networkRetryProviderDefaultNumberOfRetries,
+		maximumNumberOfRetries: Int? = Conf[\.urlRequestOperation.networkRetryProviderDefaultNumberOfRetries],
 		alsoRetryNonIdempotentRequests: Bool = false,
 		allowOtherSuccessObserver: Bool = true,
 		allowReachabilityObserver: Bool = true

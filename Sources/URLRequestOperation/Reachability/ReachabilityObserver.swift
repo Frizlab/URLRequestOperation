@@ -24,6 +24,7 @@ import SystemConfiguration
 import UIKit
 #endif
 
+import Configuration
 import Logging
 import SemiSingleton
 

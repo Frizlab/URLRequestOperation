@@ -18,6 +18,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
 import FormURLEncodedCoder
 
 
@@ -28,12 +29,12 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest(
 		urlRequest: URLRequest, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self,
-		decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultAPIRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultAPIRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultAPIRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType : Decodable {
 		let resultProcessor = resultProcessorModifier(
 			HTTPStatusCodeCheckResultProcessor()
@@ -51,12 +52,12 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest(
 		url: URL, method: String = "GET", headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self,
-		decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultAPIRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultAPIRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultAPIRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType : Decodable {
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)
 		for (key, val) in headers {request.setValue(val, forHTTPHeaderField: key)}
@@ -75,12 +76,12 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<URLParametersType : Encodable>(
 		url: URL, method: String = "GET", urlParameters: URLParametersType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self,
-		parameterEncoder: URLQueryEncoder = URLRequestOperationConfig.defaultAPIRequestParametersEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		parameterEncoder: URLQueryEncoder = Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultAPIRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultAPIRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultAPIRetryProviders]
 	) throws -> URLRequestDataOperation<ResultType> where ResultType : Decodable {
 		return try Self.forAPIRequest(
 			url: url, method: method, urlParameters: urlParameters, httpBody: nil as Int8?, headers: headers, cachePolicy: cachePolicy, session: session,
@@ -94,12 +95,12 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<HTTPBodyType : Encodable>(
 		url: URL, method: String = "POST", httpBody: HTTPBodyType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self,
-		bodyEncoder: HTTPContentEncoder = URLRequestOperationConfig.defaultAPIRequestBodyEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		bodyEncoder: HTTPContentEncoder = Conf[\.urlRequestOperation.defaultAPIRequestBodyEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultAPIRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultAPIRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultAPIRetryProviders]
 	) throws -> URLRequestDataOperation<ResultType> where ResultType : Decodable {
 		return try Self.forAPIRequest(
 			url: url, method: method, urlParameters: nil as Int8?, httpBody: httpBody, headers: headers, cachePolicy: cachePolicy, session: session,
@@ -115,12 +116,12 @@ public extension URLRequestDataOperation {
 	static func forAPIRequest<URLParametersType : Encodable, HTTPBodyType : Encodable>(
 		url: URL, method: String = "POST", urlParameters: URLParametersType?, httpBody: HTTPBodyType?, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		successType: ResultType.Type = ResultType.self,
-		parameterEncoder: URLQueryEncoder = URLRequestOperationConfig.defaultAPIRequestParametersEncoder, bodyEncoder: HTTPContentEncoder = URLRequestOperationConfig.defaultAPIRequestBodyEncoder, decoders: [HTTPContentDecoder] = URLRequestOperationConfig.defaultAPIResponseDecoders,
+		parameterEncoder: URLQueryEncoder = Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder], bodyEncoder: HTTPContentEncoder = Conf[\.urlRequestOperation.defaultAPIRequestBodyEncoder], decoders: [HTTPContentDecoder] = Conf[\.urlRequestOperation.defaultAPIResponseDecoders],
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
 		resultProcessorModifier: (AnyResultProcessor<Data, ResultType>) -> AnyResultProcessor<Data, ResultType> = { $0 },
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultAPIRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultAPIRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultAPIRetryProviders]
 	) throws -> URLRequestDataOperation<ResultType> where ResultType : Decodable {
 		let url = try url.appendingQueryParameters(from: urlParameters, encoder: parameterEncoder)
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)

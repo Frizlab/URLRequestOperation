@@ -21,6 +21,8 @@ import FoundationNetworking
 import os.log
 #endif
 
+import Configuration
+
 
 
 extension URLRequest {

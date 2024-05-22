@@ -18,6 +18,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
 import URLRequestOperation
 
 
@@ -45,8 +46,8 @@ class SessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate
 
 /* ************************************************************ */
 
-URLRequestOperationConfig.maxRequestBodySizeToLog = .max
-URLRequestOperationConfig.maxResponseBodySizeToLog = .max
+Conf.setRootValue(.max, for: \.urlRequestOperation.maxRequestBodySizeToLog)
+Conf.setRootValue(.max, for: \.urlRequestOperation.maxResponseBodySizeToLog)
 
 #if os(macOS) || os(iOS) || os(tvOS) || os(watchOS)
 let session = URLSession(configuration: .ephemeral, delegate: URLRequestOperationSessionDelegateProxy(SessionDelegate(id: 1)), delegateQueue: nil)

@@ -1,6 +1,15 @@
 {
-  "originHash" : "ad2aa285cc70ffd3f37b77189dfa4e3362666e86e7673e3c12c69330acd28f89",
+  "originHash" : "580d3f309aed70e97c00a28a16faf25517bbd1b977885e094839774325a952ec",
   "pins" : [
+    {
+      "identity" : "dependencyinjection",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/DependencyInjection.git",
+      "state" : {
+        "branch" : "conf",
+        "revision" : "0fb3413713bd4fb2a96789f9cca13c79339fa942"
+      }
+    },
     {
       "identity" : "httpcoders",
       "kind" : "remoteSourceControl",
@@ -74,12 +83,30 @@
       }
     },
     {
+      "identity" : "swift-service-context",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-service-context.git",
+      "state" : {
+        "revision" : "ce0141c8f123132dbd02fd45fea448018762df1b",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-syntax.git",
       "state" : {
         "revision" : "303e5c5c36d6a558407d364878df131c3546fad8",
         "version" : "510.0.2"
+      }
+    },
+    {
+      "identity" : "unwraporthrow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/UnwrapOrThrow.git",
+      "state" : {
+        "revision" : "085ea7b599b0db956541b7189a57b0c98f15337f",
+        "version" : "1.0.1"
       }
     }
   ],

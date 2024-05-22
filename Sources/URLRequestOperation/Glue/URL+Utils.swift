@@ -15,6 +15,7 @@ limitations under the License. */
 
 import Foundation
 
+import Configuration
 import FormURLEncodedCoder
 
 
@@ -36,7 +37,7 @@ extension URL {
 		return ret
 	}
 	
-	public func appendingQueryParameters<Parameters : Encodable>(from parameters: Parameters?, encoder: URLQueryEncoder = URLRequestOperationConfig.defaultAPIRequestParametersEncoder) throws -> URL {
+	public func appendingQueryParameters<Parameters : Encodable>(from parameters: Parameters?, encoder: URLQueryEncoder = Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder]) throws -> URL {
 		guard let parameters = parameters else {
 			return self
 		}

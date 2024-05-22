@@ -18,6 +18,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
+
 
 
 public extension URLRequestDataOperation {
@@ -26,8 +28,8 @@ public extension URLRequestDataOperation {
 		urlRequest: URLRequest, session: URLSession = .shared,
 		requestProcessors: [RequestProcessor] = [],
 		acceptableStatusCodes: Set<Int> = Set(200..<400),
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultDataRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultDataRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultDataRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultDataRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == Data {
 		return URLRequestDataOperation<Data>(
 			request: urlRequest, session: session,
@@ -42,8 +44,8 @@ public extension URLRequestDataOperation {
 		url: URL, headers: [String: String?] = [:], cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy, session: URLSession = .shared,
 		requestProcessors: [RequestProcessor] = [],
 		acceptableStatusCodes: Set<Int> = Set(200..<400),
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultDataRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultDataRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultDataRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultDataRetryProviders]
 	) -> URLRequestDataOperation<ResultType> where ResultType == Data {
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)
 		for (key, val) in headers {request.setValue(val, forHTTPHeaderField: key)}

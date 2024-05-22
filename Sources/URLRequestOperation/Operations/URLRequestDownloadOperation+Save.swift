@@ -18,6 +18,8 @@ import Foundation
 import FoundationNetworking
 #endif
 
+import Configuration
+
 
 
 public extension URLRequestDownloadOperation {
@@ -28,8 +30,8 @@ public extension URLRequestDownloadOperation {
 		destination: URL, moveBehavior: URLMoveResultProcessor.MoveBehavior = .failIfDestinationExists,
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultDownloadRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultDownloadRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultDownloadRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultDownloadRetryProviders]
 	) -> URLRequestDownloadOperation<ResultType> where ResultType == URL {
 		return URLRequestDownloadOperation(
 			request: request, session: session,
@@ -46,8 +48,8 @@ public extension URLRequestDownloadOperation {
 		destination: URL, moveBehavior: URLMoveResultProcessor.MoveBehavior = .failIfDestinationExists,
 		resultProcessingDispatcher: BlockDispatcher = SyncBlockDispatcher(),
 		requestProcessors: [RequestProcessor] = [],
-		retryableStatusCodes: Set<Int> = URLRequestOperationConfig.defaultDownloadRetryableStatusCodes,
-		retryProviders: [RetryProvider] = URLRequestOperationConfig.defaultDownloadRetryProviders
+		retryableStatusCodes: Set<Int> = Conf[\.urlRequestOperation.defaultDownloadRetryableStatusCodes],
+		retryProviders: [RetryProvider] = Conf[\.urlRequestOperation.defaultDownloadRetryProviders]
 	) -> URLRequestDownloadOperation<ResultType> where ResultType == URL {
 		var request = URLRequest(url: url, cachePolicy: cachePolicy)
 		for (key, val) in headers {request.setValue(val, forHTTPHeaderField: key)}

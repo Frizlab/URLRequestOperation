@@ -18,6 +18,8 @@ import Foundation
 import os.log
 #endif
 
+import Configuration
+
 
 
 #if canImport(ObjectiveC)
