@@ -15,7 +15,8 @@ limitations under the License. */
 
 import Foundation
 #if canImport(OSLog)
-import OSLog
+/* The Swift compiler complains the annotation is unused, but it actually is, inside an expansion of a macro. */
+@preconcurrency import OSLog
 #endif
 
 import Configuration
