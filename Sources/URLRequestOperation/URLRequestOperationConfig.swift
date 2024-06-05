@@ -109,36 +109,35 @@ extension ConfKeys.URLRequestOperation {
 }
 
 
-internal extension Conf {
+extension Conf {
 	
-	static var oslog:  OSLog?          {Conf[\.urlRequestOperation.oslog]}
-	static var logger: Logging.Logger? {Conf[\.urlRequestOperation.logger]}
+	#declareConfAccessor(\.urlRequestOperation.oslog,  OSLog?         .self)
+	#declareConfAccessor(\.urlRequestOperation.logger, Logging.Logger?.self)
 	
-	static var defaultAPIResponseDecoders:         [HTTPContentDecoder] {Conf[\.urlRequestOperation.defaultAPIResponseDecoders]}
-	static var defaultAPIRequestBodyEncoder:       HTTPContentEncoder   {Conf[\.urlRequestOperation.defaultAPIRequestBodyEncoder]}
-	static var defaultAPIRequestParametersEncoder: URLQueryEncoder      {Conf[\.urlRequestOperation.defaultAPIRequestParametersEncoder]}
+	#declareConfAccessor(\.urlRequestOperation.defaultAPIResponseDecoders,         [HTTPContentDecoder].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultAPIRequestBodyEncoder,       HTTPContentEncoder  .self)
+	#declareConfAccessor(\.urlRequestOperation.defaultAPIRequestParametersEncoder, URLQueryEncoder     .self)
 	
-	static var defaultAPIRetryProviders:       [RetryProvider] {Conf[\.urlRequestOperation.defaultAPIRetryProviders]}
-	static var defaultAPIRetryableStatusCodes: Set<Int>        {Conf[\.urlRequestOperation.defaultAPIRetryableStatusCodes]}
+	#declareConfAccessor(\.urlRequestOperation.defaultAPIRetryProviders,       [RetryProvider].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultAPIRetryableStatusCodes, Set<Int>       .self)
 	
-	static var defaultDataRetryProviders:       [RetryProvider] {Conf[\.urlRequestOperation.defaultDataRetryProviders]}
-	static var defaultDataRetryableStatusCodes: Set<Int>        {Conf[\.urlRequestOperation.defaultDataRetryableStatusCodes]}
+	#declareConfAccessor(\.urlRequestOperation.defaultDataRetryProviders,       [RetryProvider].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultDataRetryableStatusCodes, Set<Int>       .self)
 	
-	static var defaultImageRetryProviders:       [RetryProvider] {Conf[\.urlRequestOperation.defaultImageRetryProviders]}
-	static var defaultImageRetryableStatusCodes: Set<Int>        {Conf[\.urlRequestOperation.defaultImageRetryableStatusCodes]}
+	#declareConfAccessor(\.urlRequestOperation.defaultImageRetryProviders,       [RetryProvider].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultImageRetryableStatusCodes, Set<Int>       .self)
 	
-	static var defaultStringEncoding:             String.Encoding {Conf[\.urlRequestOperation.defaultStringEncoding]}
-	static var defaultStringRetryProviders:       [RetryProvider] {Conf[\.urlRequestOperation.defaultStringRetryProviders]}
-	static var defaultStringRetryableStatusCodes: Set<Int>        {Conf[\.urlRequestOperation.defaultStringRetryableStatusCodes]}
+	#declareConfAccessor(\.urlRequestOperation.defaultStringEncoding,             String.Encoding.self)
+	#declareConfAccessor(\.urlRequestOperation.defaultStringRetryProviders,       [RetryProvider].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultStringRetryableStatusCodes, Set<Int>       .self)
 	
-	static var defaultDownloadRetryProviders:       [RetryProvider] {Conf[\.urlRequestOperation.defaultDownloadRetryProviders]}
-	static var defaultDownloadRetryableStatusCodes: Set<Int>        {Conf[\.urlRequestOperation.defaultDownloadRetryableStatusCodes]}
+	#declareConfAccessor(\.urlRequestOperation.defaultDownloadRetryProviders,       [RetryProvider].self)
+	#declareConfAccessor(\.urlRequestOperation.defaultDownloadRetryableStatusCodes, Set<Int>       .self)
 	
-	static var networkRetryProviderDefaultNumberOfRetries: Int?           {Conf[\.urlRequestOperation.networkRetryProviderDefaultNumberOfRetries]}
-	static var networkRetryProviderBackoffTable:           [TimeInterval] {Conf[\.urlRequestOperation.networkRetryProviderBackoffTable]}
+	#declareConfAccessor(\.urlRequestOperation.networkRetryProviderDefaultNumberOfRetries, Int?          .self)
+	#declareConfAccessor(\.urlRequestOperation.networkRetryProviderBackoffTable,           [TimeInterval].self)
 	
-	static var maxRequestBodySizeToLog: Int? {Conf[\.urlRequestOperation.maxRequestBodySizeToLog]}
-	
-	static var maxResponseBodySizeToLog: Int? {Conf[\.urlRequestOperation.maxResponseBodySizeToLog]}
+	#declareConfAccessor(\.urlRequestOperation.maxRequestBodySizeToLog,  Int?.self)
+	#declareConfAccessor(\.urlRequestOperation.maxResponseBodySizeToLog, Int?.self)
 	
 }
