@@ -36,12 +36,8 @@ public extension ConfKeys {
 extension ConfKeys.URLRequestOperation {
 	
 #if canImport(os)
- #if swift(>=6.0)
-  /* See <https://developer.apple.com/forums/thread/747816?answerId=781922022#781922022>. */
-  #warning("Reevaluate whether unsafeNonIsolated is still necessary.")
- #endif
-	#declareConfKey("oslog",  OSLog?         .self, unsafeNonIsolated: true, defaultValue: OSLog(subsystem: "com.happn.RetryingOperation", category: "Main"))
-	#declareConfKey("logger", Logging.Logger?.self,                          defaultValue: nil)
+	#declareConfKey("oslog",  OSLog?         .self, defaultValue: OSLog(subsystem: "com.happn.RetryingOperation", category: "Main"))
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: nil)
 #else
 	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.URLRequestOperation"))
 #endif
