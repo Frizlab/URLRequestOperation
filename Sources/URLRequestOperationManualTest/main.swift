@@ -22,7 +22,7 @@ import GlobalConfModule
 import URLRequestOperation
 
 
-class SessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
+final class SessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
 	
 	let delegateId: Int
 	
