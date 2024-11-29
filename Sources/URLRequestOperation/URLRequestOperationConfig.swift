@@ -36,7 +36,7 @@ public extension ConfKeys {
 extension ConfKeys.URLRequestOperation {
 	
 #if canImport(os)
-	#declareConfKey("oslog",  OSLog?         .self, defaultValue: OSLog(subsystem: "com.happn.RetryingOperation", category: "Main"))
+	#declareConfKey("oslog",  OSLog?         .self, defaultValue: OSLog(subsystem: "me.frizlab.URLRequestOperation", category: "Main"))
 	#declareConfKey("logger", Logging.Logger?.self, defaultValue: nil)
 #else
 	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.URLRequestOperation"))
