@@ -107,7 +107,9 @@ extension ConfKeys.URLRequestOperation {
 
 extension Conf {
 	
+#if canImport(os)
 	#declareConfAccessor(\.urlRequestOperation.oslog,  OSLog?         .self)
+#endif
 	#declareConfAccessor(\.urlRequestOperation.logger, Logging.Logger?.self)
 	
 	#declareConfAccessor(\.urlRequestOperation.defaultAPIResponseDecoders,         [HTTPContentDecoder].self)
