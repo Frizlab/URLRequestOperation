@@ -1,5 +1,5 @@
 {
-  "originHash" : "17fb3a6b6ff7e133bee7a7f802ec1962580186e7faa04f596fc91f1f15aa1ccf",
+  "originHash" : "bbf379af5748b6bbc3a4bd7170da8d7ae5d644db92ce3cc64a8f794632bf3983",
   "pins" : [
     {
       "identity" : "globalconfmodule",
@@ -52,7 +52,7 @@
       "location" : "https://github.com/Frizlab/SemiSingleton.git",
       "state" : {
         "revision" : "74d8bf7ea66d8a32fa8c6ffe80705a0e4f185e27",
-        "version" : "2.1.0-beta.3"
+        "version" : "2.1.0"
       }
     },
     {
