@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/SemiSingleton.git",
       "state" : {
-        "revision" : "e010f893ea20cc32fcf58396383859b327185005",
-        "version" : "2.1.0-beta.2"
+        "revision" : "74d8bf7ea66d8a32fa8c6ffe80705a0e4f185e27",
+        "version" : "2.1.0-beta.3"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
-        "version" : "1.6.1"
+        "revision" : "96a2f8a0fa41e9e09af4585e2724c4e825410b91",
+        "version" : "1.6.2"
       }
     },
     {
