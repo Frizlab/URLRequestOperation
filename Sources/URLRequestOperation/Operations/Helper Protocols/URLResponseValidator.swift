@@ -38,7 +38,7 @@ public protocol URLResponseValidator : Sendable {
 	 
 	 The asynchronicity allows the dev to let the user choose whether he allows downloading a file,
 	 if the response indicates the data task should be transformed to a download task for instance
-	 ([see this Developer Forums post](https://developer.apple.com/forums/thread/693645?answerId=693559022#693559022)).
+	 ([see this Developer Forums post](<https://developer.apple.com/forums/thread/693645?answerId=693559022#693559022>)).
 	 
 	 URLRequestOperation’s goal is not to replace `URLSession`’s delegate.
 	 If you need to convert your task to a download task, or need to be async in general when validating the response,
